@@ -12,6 +12,11 @@ function loadHostsMap(string $map = null): void
         $map = explode("\n", trim($map, "\n"));
     }
 
+    $map = array_filter($map, function ($url) {
+        return
+            ! str_starts_with($url, '#');
+    });
+
     if ($map) {
         foreach ($map as $url) {
             defineHost($url);

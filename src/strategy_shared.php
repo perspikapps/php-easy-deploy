@@ -34,6 +34,10 @@ task('strategy:shared:release', function () {
 </IfModule>
 EOT;
 
+    writeln('<fg=bright-green>info</> Apply <fg=bright-magenta>htaccess</> file');
     cd('{{deploy_path}}');
     run('echo "'.$hta.'" > ./.htaccess');
-})->desc('Sets .htaccess');
+
+    writeln('<fg=bright-green>info</> Apply <fg=bright-magenta>shared</> mode');
+    updateEnv('APP_SHARED', 'true');
+})->desc('Sets shared config');

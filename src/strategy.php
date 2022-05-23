@@ -2,15 +2,15 @@
 
 namespace Deployer;
 
+set_time_limit(0);
+ini_set('memory_limit', '-1');
+
 require 'recipe/common.php';
 require_once __DIR__.'/func_defineHost.php';
 require_once __DIR__.'/func_loadHostsMap.php';
 require_once __DIR__.'/func_updateEnv.php';
 require_once __DIR__.'/func_invokeHook.php';
 require_once __DIR__.'/task_setenv.php';
-require_once __DIR__.'/strategy_upload.php';
-require_once __DIR__.'/strategy_shared.php';
-require_once __DIR__.'/strategy_laravel.php';
 
 task(
     'strategy:release',
@@ -21,9 +21,9 @@ task(
 
 // Strategy before symlink
 task(
-    'strategy:ready',
+    'strategy:released',
     static function () {
-        invokeHook('ready');
+        invokeHook('released');
     }
 )->hidden();
 
@@ -62,7 +62,7 @@ task(
         'strategy:release',
         'deploy:shared',
         'deploy:writable',
-        'strategy:ready',
+        'strategy:released',
         'deploy:symlink',
         'deploy:setenv',
         'strategy:done',
@@ -75,3 +75,6 @@ task(
 after('deploy:failed', 'deploy:unlock');
 after('deploy:failed', 'strategy:failed');
 after('rollback', 'strategy:rollback');
+
+// Load map
+loadHostsMap();

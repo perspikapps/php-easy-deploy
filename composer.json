@@ -1,5 +1,5 @@
 {
-    "name": "perspikapps/php-easy-deploy",
+    "name": "perspikapps/php-easy-deployer",
     "description": "A deployer.org recipe with url-based easy configuration",
     "license": "MIT",
     "authors": [
@@ -21,18 +21,18 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
         "nunomaduro/phpinsights": "dev-master",
-        "orchestra/testbench": "~5|~6",
+        "orchestra/testbench": "~5 || ~6",
         "phpunit/phpunit": "^9.0",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload": {
         "psr-4": {
-            "Perspikapps\\EasyDeploy\\": "src/"
+            "Perspikapps\\EasyDeployer\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Perspikapps\\EasyDeploy\\Tests\\": "tests"
+            "Perspikapps\\EasyDeployer\\Tests\\": "tests"
         }
     },
     "config": {

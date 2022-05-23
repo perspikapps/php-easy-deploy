@@ -4,7 +4,7 @@ namespace Deployer;
 
 require_once 'recipe/laravel.php';
 
-task('strategy:laravel:ready', [
+task('strategy:laravel:released', [
     'artisan:storage:link',
     'artisan:migrate',
     'artisan:db:seed',
@@ -13,6 +13,9 @@ task('strategy:laravel:ready', [
 
 task('strategy:laravel:done', [
     'artisan:config:cache',
+    'artisan:route:cache',
+    'artisan:view:cache',
+    'artisan:event:cache',
 ])->desc('Clear all caches');
 
 task('strategy:laravel:rollback', [
