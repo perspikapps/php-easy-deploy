@@ -10,9 +10,7 @@
 
 [![Buy me a coffee](https://badgen.net/badge/buymeacoffe/tomgrv/yellow?icon=buymeacoffee)](https://buymeacoffee.com/tomgrv)
 
-This package displays automaticaly a top-left corner ribbon with APP_ENV value & version number on all pages, depending on APP_ENV value & associated config:
-
-![capture](./doc/assets/capture.png)
+This package handles deployement configuration via a `deploy.yaml` file to define deploy strategy and a `.hostmap` file to define target strategy
 
 ## Installation
 
@@ -24,7 +22,55 @@ composer require perspikapps/php-easy-deployer
 
 ## Usage
 
-Deployment is handled by [deployphp/deployer](https://github.com/deployphp/deployer) package: fill in `VERSION` file at project root.
+Deployment is handled by [deployphp/deployer](https://github.com/deployphp/deployer) package.
+
+### deploy.yaml
+
+_See [deployer](https://github.com/deployphp/deployer) config for details_
+
+```yaml
+import:
+    - vendor/perspikapps/php-easy-deployer/src/strategy_laravel.php
+    - vendor/perspikapps/php-easy-deployer/src/strategy_upload.php
+    - vendor/perspikapps/php-easy-deployer/src/strategy_update.php
+    - vendor/perspikapps/php-easy-deployer/src/strategy_shared.php
+    - vendor/perspikapps/php-easy-deployer/src/strategy.php
+
+config:
+    source_path: './'
+    shared_dirs:
+        - storage
+    shared_files:
+        - .env
+    writable_dirs:
+        - bootstrap/cache
+        - storage
+        - storage/app
+        - storage/app/public
+        - storage/framework
+        - storage/framework/cache
+        - storage/framework/sessions
+        - storage/framework/views
+        - storage/logs
+    log_files:
+        - storage/logs/*.log
+```
+
+### .hostname
+
+Specify ONE deployement target per line as url:
+
+-   url scheme = strategies to activate (`+` separated, each must be loaded in `import` section of `deploy.yaml` file)
+-   url user/host/port = server to deploy to
+-   url path = path on server to deploy to
+-   url query = deploy options to use
+-   url anchor = variables to set in .env file after deployment
+
+```ini
+upload+laravel://user@dev.exemple.com/var/home/{{hostname}}?bin/php=/opt/plesk/php/7.4/bin/php&writable_mode=chmod#debug=true&env=staging
+upload+laravel://user@beta.exemple.com/var/home/{{hostname}}?bin/php=/opt/plesk/php/7.4/bin/php&writable_mode=chmod#debug=true&env=beta
+upload+laravel://user@www.exemple.com/var/home/{{hostname}}?bin/php=/opt/plesk/php/7.4/bin/php&writable_mode=chmod#debug=false&env=production
+```
 
 ## Security
 
